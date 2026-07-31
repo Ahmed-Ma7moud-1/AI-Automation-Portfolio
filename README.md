@@ -1,31 +1,37 @@
-# 🚀 Smart AI Sales & Inventory Automation Agent
+# 🤖 AI Automation & Agentic Solutions Portfolio
 
-An end-to-end AI automation workflow built using **n8n**, **Telegram**, and **Google Sheets** to record sales, purchases, and debt tracking via natural speech/text.
+Welcome! I am an **AI Automation & Agentic Systems Developer** specializing in building autonomous workflows, intelligent agents, and seamless enterprise integrations.
 
----
-
-## 🎯 Features
-
-* 🗣️ **Natural Language Input:** Employees can send voice-to-text or normal messages in casual language.
-* 🤖 **Smart Extraction:** Extracts Customer Name, Item Type, Quantity, Total Price, and Remaining (Deferred) Payment.
-* 🛡️ **Validation (No Empty Rows):** Asks the user for missing fields before appending to Google Sheets.
-* 💰 **Zero Model Subscriptions:** Self-hosted and setup to run without expensive monthly AI API subscriptions (Host cost only).
-* 📈 **Scalable Architecture:** Easily expandable to handle inventory management, debt reminder alerts, and automated weekly/monthly financial reports.
+I design custom AI solutions using **n8n**, **LLMs**, **Custom Tools**, and **APIs** to automate complex business processes and eliminate repetitive manual tasks.
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Core Expertise & Technologies
 
-* **Automation Engine:** [n8n](https://n8n.io/)
-* **AI Engine:** OpenRouter / Open-Source Models
-* **Database/Sheets:** Google Sheets API
-* **Interface:** Telegram Bot API
+* 🧠 **Agentic AI Frameworks:** Building multi-node AI agents with memory, tool calling, and structured JSON parsing.
+* ⚡ **Workflow Automation:** Advanced process orchestration using **n8n** (Self-Hosted).
+* 🔌 **Integrations:** Telegram Bot API, Google Workspace (Sheets, Gmail, Drive), Webhooks, REST APIs.
+* 💰 **Cost-Optimized Architecture:** Designing self-hosted solutions using open-source models/routers (Zero monthly model subscriptions).
 
 ---
 
-## 📥 How to Import to n8n
+## 📁 Featured Projects
 
-1. Download the `workflow.json` file from this repository.
-2. Open your n8n instance.
-3. Click **Import from File** and upload the `.json` file.
-4. Set up your credentials for Telegram Bot & Google Sheets.
+### 1️⃣ Smart AI Sales & Inventory Agent
+* **Description:** An autonomous AI agent integrated with Telegram and Google Sheets. It receives unstructured natural language/voice from users, extracts structured order/sales data, requests missing information, and logs verified entries automatically.
+* **Tech Stack:** `n8n` | `OpenRouter API` | `Telegram Bot API` | `Google Sheets API`
+* **Key Feature:** Zero API subscription reliance (Self-hosted) + Validation node to prevent incomplete entries.
+
+---
+
+## 🛠️ How to Import Workflows
+
+Each project in this repository includes a production-ready `.json` workflow file:
+1. Download the target `.json` file from the repo.
+2. Open your **n8n** instance.
+3. Select **Import from File** and upload the workflow.
+4. Add your API credentials (Telegram, Google, OpenRouter).
+
+---
+
+🤝 **Open for Collaboration & Freelance Projects**
