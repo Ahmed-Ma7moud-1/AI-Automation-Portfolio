@@ -1,0 +1,378 @@
+{
+  "name": "Abo_Talien",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -336,
+        -112
+      ],
+      "id": "6f4c55e6-f9f6-467e-b430-424b158844f5",
+      "name": "Telegram Trigger",
+      "webhookId": "1209b091-e940-4b8d-8bc3-cdcac50fe875",
+      "credentials": {
+        "telegramApi": {
+          "id": "9FQhF00mAgw5Ui7k",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1lhjZ7KMoUR8Lwl281i2c2vpdOPUzbBpDgetPElE4Dzo",
+          "mode": "list",
+          "cachedResultName": "Abo_Talien",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1lhjZ7KMoUR8Lwl281i2c2vpdOPUzbBpDgetPElE4Dzo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1lhjZ7KMoUR8Lwl281i2c2vpdOPUzbBpDgetPElE4Dzo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "تاريخ": "={{ $now.format('DD/MM') }}",
+            "نوع العملية": "={{ $('AI Agent').item.json.output.includes('شراء') || $('AI Agent').item.json.output.includes('اشتريت') || $('AI Agent').item.json.output.includes('مورد') ? 'شراء' : 'بيع' }}",
+            "اسم العميل/المورد": "={{ $('AI Agent').item.json.output.match(/الطرف:\\s*([^\\n]+)/)?.[1] || '' }}",
+            "نوع الحديد / المقاس": "={{ $('AI Agent').item.json.output.match(/الصنف:\\s*([^\\n]+)/)?.[1] || '' }} {{ $('AI Agent').item.json.output.match(/المقاس:\\s*([^\\n]+)/)?.[1] || '' }}",
+            "الكمية (بالطن/الكيلو)": "={{ $('AI Agent').item.json.output.match(/الكمية:\\s*([^\\n]+)/)?.[1] || '' }}",
+            "سعر الطن / الإجمالي": "={{ $('AI Agent').item.json.output.match(/السعر:\\s*([^\\n]+)/)?.[1] || '' }}",
+            "ملاحظات": "={{ $('AI Agent').item.json.output.match(/المتبقي:\\s*([^\\n]+)/)?.[1] ? 'آجل - باقي: ' + $('AI Agent').item.json.output.match(/المتبقي:\\s*([^\\n]+)/)[1] : 'كاش / كاش بالكامل' }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "تاريخ",
+              "displayName": "تاريخ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "نوع العملية",
+              "displayName": "نوع العملية",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "اسم العميل/المورد",
+              "displayName": "اسم العميل/المورد",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "نوع الحديد / المقاس",
+              "displayName": "نوع الحديد / المقاس",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "الكمية (بالطن/الكيلو)",
+              "displayName": "الكمية (بالطن/الكيلو)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "سعر الطن / الإجمالي",
+              "displayName": "سعر الطن / الإجمالي",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ملاحظات",
+              "displayName": "ملاحظات",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        528,
+        -224
+      ],
+      "id": "00cb2e10-3d8c-4837-b4f0-5a1225e4b922",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RHhEYcICaly2rFTM",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=أنت موظف استقبال ومساعد ذكي لإدارة مخزن وحسابات الحديد عبر التليجرام.\n\nقواعد اللغة والأسلوب (صارمة جداً):\n1. ممنوع منعاً باتاً استخدام أي كلمة إنجليزية أو مصطلح تقني أو رمزي (مثل AstConfirm, JSON, Sheet, System, Bot, Function, Tool, Append) داخل الردود.\n2. الردود يجب أن تكون بلغة عربية عامية مصرية بسيطة، واضحة ومباشرة 100%.\n\nقواعد التفاعل:\n1. إذا كانت الرسالة ترحيبية أو طلب عام (مثل \"عايز اسجل بيعه\" / \"في شراء\"):\n   رد فوراً بهذا النص العربي فقط:\n   \"تمام يا غالي، أرسلي التفاصيل:\n   - اسم العميل أو المورد\n   - نوع ومقاس الحديد\n   - الكمية والسعر\"\n\n2. إذا أرسل الموظف بعض البيانات وكانت هناك تفاصيل ناقصة:\n   - اطلب منه الحقول الناقصة فقط بأسلوب عربي مختصر وبدون أي رموز إنجليزية.\n\n3. عند اكتمال كل البيانات (الاسم، نوع الحديد، الكمية، السعر):\n   - اكتب نص تأكيدي بالعربي فقط يحتوي على:\n   \"تم تسجيل المعاملة بنجاح\"\n   متبوعة بتلخيص البيانات المسجلة.\n- إذا ذكر الموظف أن البيعة/الشراء (آجل) أو تم دفع جزء وباقي جزء:\n  احسب أو اكتب المبلغ المتبقي، واذكر في الرد سطر جديد:\n  المتبقي: [اكتب المبلغ المتبقي هنا]\n- حدد هل العملية (بيع) أم (شراء) بناءً على كلام الموظف واذكرها بوضوح في ملخص التلخيص بعبارة:\nالعملية: [بيع / شراء]"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -160,
+        -160
+      ],
+      "id": "af7b3308-978a-44e4-9859-145a5be7af6a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "nvidia/nemotron-3-nano-30b-a3b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        48
+      ],
+      "id": "faee430a-1074-47d4-bec6-39ca79141d33",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "yru3dR78CmqbS4BD",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.from.id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -96,
+        48
+      ],
+      "id": "95dde0ba-c964-4076-81b8-986e3dc7a5d7",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $('AI Agent').item.json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        -80
+      ],
+      "id": "52dc49ce-233b-4259-bca8-26522523848d",
+      "name": "Send a text message",
+      "webhookId": "5fd600e1-c481-44c4-a984-54af09a5e094",
+      "credentials": {
+        "telegramApi": {
+          "id": "9FQhF00mAgw5Ui7k",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bc95a823-4c5f-4567-b415-e2580176a5a5",
+              "leftValue": "={{ $('AI Agent').item.json.output.match(/الطرف:\\s*([^\\n]+)/)?.[1] || '' }}",
+              "rightValue": "تم تسجيل",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        144,
+        -160
+      ],
+      "id": "75553c7a-4d8c-447f-9991-05e0ff3f59bc",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $('AI Agent').item.json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        704,
+        -224
+      ],
+      "id": "24656c52-fda9-493c-bc48-9d71ea43a111",
+      "name": "Send a text message1",
+      "webhookId": "c10e2976-3c4c-494e-a217-f75992d838d6",
+      "credentials": {
+        "telegramApi": {
+          "id": "9FQhF00mAgw5Ui7k",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "dbfc3e5e-9073-49af-be1a-728292251ca3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bb39d9ce780ae2c36ad75e5702f97463709a17fa69a719c6cb36853f4463a6b5"
+  },
+  "nodeGroups": [],
+  "id": "IMpeErnziO8dDcoD",
+  "tags": []
+}
