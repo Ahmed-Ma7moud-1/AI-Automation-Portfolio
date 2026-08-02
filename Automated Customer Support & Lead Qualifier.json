@@ -1,0 +1,382 @@
+{
+  "name": "Automated Customer Support & Lead Qualifier",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "nvidia/nemotron-3-nano-30b-a3b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        96,
+        272
+      ],
+      "id": "124c1a35-9a02-4c7e-98a6-57d15c089f47",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "yru3dR78CmqbS4BD",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "sales_lead",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "81bbe6c1-f9c1-41c7-92ec-2d353d1cfd1f"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sales_lead"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0bdbb726-4de3-4e12-b373-cf8511d37e55",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "=technical_support",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "technical_support"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "aa0d7837-be5d-4d0f-8275-cf2c3a372239",
+                    "leftValue": "={{ $json.intent }}",
+                    "rightValue": "spam",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "spam"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        736,
+        0
+      ],
+      "id": "9d2133b1-124e-45e3-9943-6f754f2ae8d2",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "8800926226",
+        "text": "=💼 **طلب مبيعات جديد (New Sales Lead)!**\n━━━━━━━━━━━━━━━━━━\n📌 **نوع الطلب:** مبيعات واستفسار عن باقات\n😊 **حالة العميل:** {{ $json.customer_mood }}\n📝 **ملخص الطلب:**\n{{ $json.summary }}\n━━━━━━━━━━━━━━━━━━\n🎯 *يرجى إرسال تفاصيل الأسعار والتواصل مع العميل.*",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1072,
+        -144
+      ],
+      "id": "65fac689-a60a-4d40-82e5-ffdd1d9f59e7",
+      "name": "Send a text message",
+      "webhookId": "c4d6fdc3-2941-4e4e-a0e2-d722d35d3239",
+      "credentials": {
+        "telegramApi": {
+          "id": "PCMJKVYKsueCbKv0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8800926226",
+        "text": "=🚨 **تنبيه دعم فني جديد!**\n━━━━━━━━━━━━━━━━━━\n📌 **نوع الطلب:** دعم فني (Technical Support)\n😡 **حالة العميل:** {{ $json.customer_mood }}\n📝 **ملخص المشكلة:**\n{{ $json.summary }}\n━━━━━━━━━━━━━━━━━━\n⚡️ *يرجى المتابعة والرد في أسرع وقت.*",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1072,
+        32
+      ],
+      "id": "b401ccca-d26e-4345-a596-9db8414c6ef4",
+      "name": "Send a text message1",
+      "webhookId": "c4d6fdc3-2941-4e4e-a0e2-d722d35d3239",
+      "credentials": {
+        "telegramApi": {
+          "id": "PCMJKVYKsueCbKv0",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        464,
+        176
+      ],
+      "id": "532eb7bf-2b68-41db-99d3-027e22eae2d8",
+      "name": "Customer Responder Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        464,
+        384
+      ],
+      "id": "552deb2f-5120-4c6b-bbe0-76f5a42ae74d",
+      "name": "OpenRouter Chat Model1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "yru3dR78CmqbS4BD",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=You are an expert AI Data Classifier and Intent Analyzer.\n\nYour ONLY job is to respond with pure, valid JSON matching the exact schema provided.\n\nCRITICAL OUTPUT RULES:\n1. Do NOT wrap the JSON inside markdown code blocks (DO NOT use ```json or ```).\n2. Do NOT add any preamble, intro, or concluding text (e.g., \"Here is the JSON\").\n3. Respond ONLY with the raw JSON string.\n\nClassification Rules:\n- intent: 'sales_lead', 'technical_support', 'spam', or 'general_inquiry'.\n- customer_mood: 'angry', 'neutral', 'happy', or 'urgent'.\n- summary: A clear 1-sentence summary in Arabic.\nYou are an expert AI Data Classifier. Analyze the incoming message and output ONLY a raw JSON object with this exact structure:\n\n{\n  \"intent\": \"sales_lead\" | \"technical_support\" | \"spam\" | \"general_inquiry\",\n  \"customer_mood\": \"angry\" | \"neutral\" | \"happy\" | \"urgent\",\n  \"summary\": \"Brief summary in Arabic\"\n}\n\nCRITICAL RULES:\n1. Do NOT write markdown backticks (do NOT use ```json or ```).\n2. Output pure, raw JSON text only. No intro or outro text."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "239583b1-003a-4937-a60c-494700037fd7",
+      "name": "Intent & Mood Analyzer"
+    },
+    {
+      "parameters": {
+        "jsCode": "// بياخد النص من الـ AI وبيحوله لـ JSON حقيقي نقدر نستخدمه في الـ Workflow\ntry {\n  const rawOutput = $input.first().json.output || \"\";\n  // تنظيف أي backticks أو كلام زائد\n  const cleanString = rawOutput.replace(/```json|```/g, '').trim();\n  const cleanJson = JSON.parse(cleanString);\n  \n  return [{ json: cleanJson }];\n} catch (error) {\n  // في حالة لو الموديل خرج نص غير قابل للتحليل\n  return [{\n    json: {\n      error: \"Failed to parse JSON\",\n      raw_output: $input.first().json.output\n    }\n  }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        16
+      ],
+      "id": "ce6a2c8a-2978-414a-b0de-eb188cd873b4",
+      "name": "Clean & Format JSON"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1lhjZ7KMoUR8Lwl281i2c2vpdOPUzbBpDgetPElE4Dzo",
+          "mode": "list",
+          "cachedResultName": "Abo_Talien",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1lhjZ7KMoUR8Lwl281i2c2vpdOPUzbBpDgetPElE4Dzo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1lhjZ7KMoUR8Lwl281i2c2vpdOPUzbBpDgetPElE4Dzo/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        -208
+      ],
+      "id": "54f53e92-2abe-42ed-b96b-56365795505b",
+      "name": "Log Lead to Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "RHhEYcICaly2rFTM",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        16,
+        0
+      ],
+      "id": "1463e7a5-06de-4e82-8e40-5f87da6ac5fd",
+      "name": "When chat message received",
+      "webhookId": "df2acd23-beef-4620-a4dd-869ddefd41f0"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Intent & Mood Analyzer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Log Lead to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Customer Responder Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Responder Agent": {
+      "main": [
+        [
+          {
+            "node": "Clean & Format JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intent & Mood Analyzer": {
+      "main": [
+        [
+          {
+            "node": "Clean & Format JSON",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Clean & Format JSON": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Intent & Mood Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e7a7059c-2bd6-482a-b823-b2d8effa1ca7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "bb39d9ce780ae2c36ad75e5702f97463709a17fa69a719c6cb36853f4463a6b5"
+  },
+  "nodeGroups": [],
+  "id": "fkvojgeripwAJpGk",
+  "tags": []
+}
