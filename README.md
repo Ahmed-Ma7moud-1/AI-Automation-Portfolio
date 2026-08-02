@@ -23,7 +23,12 @@ I design custom AI solutions using **n8n**, **LLMs**, **Custom Tools**, and **AP
 * **Key Feature:** Zero API subscription reliance (Self-hosted) + Validation node to prevent incomplete entries.
 
 ---
+## 📌 Portfolio Index / قائمة المشاريع
 
+| # | Project / Agent Name | Architecture Pattern | File Link |
+|---|---|---|---|
+| 00 | Telegram to Google Sheets Automation | Webhook Integration | [`telegram-sheets-ai-workflow.json`](./telegram-sheets-ai-workflow.json) |
+| 01 | Financial & Crypto Assistant | ReAct (Reasoning + Acting) | [`Agent_01_ReAct_Financial_Assistant.json`](./Agent_01_ReAct_Financial_Assistant.json) |
 ## 🛠️ How to Import Workflows
 
 Each project in this repository includes a production-ready `.json` workflow file:
