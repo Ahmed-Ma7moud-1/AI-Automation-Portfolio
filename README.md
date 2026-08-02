@@ -33,7 +33,28 @@ I design custom AI solutions using **n8n**, **LLMs**, **Custom Tools**, and **AP
 |:---:|:---|:---|:---:|
 | **01** | Telegram Sheets AI Inventory Agent | Webhook & Dynamic Data Extraction | [`telegram-sheets-ai-workflow.json`](./telegram-sheets-ai-workflow.json) |
 | **02** | ReAct Crypto & Financial Assistant | ReAct (Reasoning + Acting + Tools) | [`Agent_01_ReAct_Financial_Assistant.json`](./Agent_01_ReAct_Financial_Assistant.json) |
+# Autonomous AI Routing & Customer Service System 🤖
 
+An advanced end-to-end AI automation workflow built using **n8n**, **OpenRouter (LLMs)**, and **Telegram / Chat Triggers**, developed under **NexFlow**.
+
+## 🌟 Overview
+This system automates customer communication by ingesting incoming messages, analyzing user intent and sentiment in real-time, intelligently routing leads (Sales, Technical Support, and Spam) to internal CRMs, and instantly generating contextual, human-like replies.
+
+## 🛠️ Tech Stack & Architecture
+* **Orchestration:** n8n (Local Docker environment)
+* **AI & LLMs:** OpenRouter (Gemini / Smart Models via AI Agents)
+* **Data Processing:** JavaScript Code Node (JSON formatting & cleaning)
+* **Integration & Logging:** Google Sheets (CRM Lead Logging) & Telegram / Web Chat Triggers
+
+## 🔄 Workflow Pipeline
+1. **Trigger:** Captures incoming messages from users.
+2. **Intent & Mood Analyzer (AI Agent):** Extracts customer intent, emotional state, and summarizes the core request.
+3. **Data Formatting (Code Node):** Cleans and normalizes the output into a strict JSON structure.
+4. **Smart Router (Switch):** Directs traffic based on intent categories (`sales_lead`, `technical_support`, `spam`).
+5. **CRM Logging & Response:** Automatically logs sales leads to Google Sheets and deploys dynamic, polite customer responder agents for real-time engagement.
+
+---
+*Built with ❤️ by Ahmed / NexFlow*
 ---
 
 ## 🛠️ How to Import Workflows
